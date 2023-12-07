@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <title>Circolo Tennis Tricase</title>
+   <!-- Link a Bootstrap CSS -->
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Aggiungi eventuali fogli di stile personalizzati qui -->
+   <link href="{% static 'css/home.css' %}" rel="stylesheet">
+ 
+</head>
+<body>
+    <nav>
+    <header>
+      <a href="#" class="logo">Circolo Tennis Tricase</a>
+      <ul class="navigation">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Prenotazioni</a></li>
+        <li><a href="#">Merch</a></li>
+        <li><a href="#">Contacci</a></li>
+      </ul>
+    </header>
+    </nav>
+  
+    <section class="parallax">
+      <h1 id="title">Circolo Tennis Tricase</h1>
+    </section>
+  
+
+    <script src="{% static 'js/home.js' %}"></script>
+  </body>
+</html>
