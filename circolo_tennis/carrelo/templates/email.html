@@ -1,0 +1,36 @@
+<!-- templates/email/conferma_ordine_email.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conferma Ordine</title>
+</head>
+<body>
+    <p>Ciao {{ user.username }},</p>
+
+    <p>Grazie per aver effettuato l'ordine su Articoli Sportivi!</p>
+
+    <h2>Riepilogo dell'Ordine</h2>
+
+    <p><strong>Dettagli dell'ordine:</strong></p>
+    <ul>
+        {% for prodotto in prodotti_ordine %}
+        <div class="card-header py-3">
+            <img src="{% static 'img/'|add:prodotto.immagine %}" class="card-img-top" alt="{{ prodotto.prodotto }}">
+        </div>
+        <p>{{ prodotto.prodotto }} - {{ prodotto.prezzo }}</p>
+        {% endfor %}
+    
+        <li><strong>Indirizzo di Spedizione:</strong> via {{ ordine.id_indirizzo.via  }} {{ordine.id_indirizzo.civico}},{{ordine.id_indirizzo.citta}}, {{ordine.id_indirizzo.provincia}} </li>
+        <!-- Aggiungi altri dettagli dell'ordine come necessario -->
+    </ul>
+
+    <p><strong>Costo Totale:</strong> {{ ordine.id_prodotto.prezzo }}$</p>
+
+    <p>Grazie ancora per il tuo acquisto!</p>
+
+    <p>Saluti,</p>
+    <p>Il Tuo Sito</p>
+</body>
+</html>
