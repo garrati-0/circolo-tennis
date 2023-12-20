@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <title>Circolo Tennis Tricase</title>
+   <!-- Link a Bootstrap CSS -->
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Aggiungi eventuali fogli di stile personalizzati qui -->
+   <link href="{% static 'css/home.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+   rel="stylesheet"
+ />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <!-- Aggiunta della classe "nav-item" e "dropdown" -->
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Prenotazioni
+                </a>
+                <!-- Aggiunta del div con la classe "dropdown-menu" per il sotto-menu -->
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- Aggiunta degli elementi del sotto-menu -->
+                    <a class="dropdown-item" href="#">Le tue prenotazioni</a>
+                    <a class="dropdown-item" href="#">Le tue lobby</a>
+                    <a class="dropdown-item" href="#">Effettua prenotazione</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "prodotti" %}">Prodotti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contattaci</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="text-end">
+        <div class="d-flex align-items-center"> <!-- Contenitore per il carrello e l'immagine del profilo -->
+            {% if user.is_authenticated %}
+            <div class="cart-icon"> <!-- Contenitore per il carrello -->
+              <a href=" class="cart-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-cart" viewBox="0 0 19 19" color="black">
+                      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                  </svg>
+              </a>
+              <div class="cart-counter">
+               
+            </div>
+          </div>
+
+          <div class="menu">
+            {{ user.first_name }} {{ user.last_name }}
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Logout</a>
+        </div>
+          
+            {% else %}
+            <div class="text-end">
+                <button id="openLoginPopup" type="button"  class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Accedi</button>
+            </div>
+            {% endif %}
+</nav>
+
+
+
+<main id="mainconthome" style=" overflow: auto;">
+      
+    {% block content %}
+  <!-- Contenuto specifico del template figlio verrà aggiunto qui -->
+    {% endblock %}
+
+
+<!-- Modal -->
+<!-- Modal di accesso -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Accedi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Esempio form di login con l'utilizzo dell'username -->
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Accedi</button>
+                </form>
+                <hr>
+                <!-- Link per passare alla registrazione -->
+                <p>Se non sei registrato, <a href="#" id="showRegister">clicca qui</a> per registrarti.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal di registrazione -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Registrati</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Esempio form di registrazione -->
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="new_firstname">Nome</label>
+                        <input type="text" class="form-control" id="new_firstname" name="new_firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_lastname">Cognome</label>
+                        <input type="text" class="form-control" id="new_lastname" name="new_lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_email">Email</label>
+                        <input type="email" class="form-control" id="new_email" name="new_email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">Nuova Password</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Conferma Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Registrati</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+    <script>
+        // Mostra il modal di registrazione quando si clicca sul link
+        $(document).ready(function(){
+           $("#showRegister").click(function(){
+              $('#loginModal').modal('hide');
+              $('#registerModal').modal('show');
+           });
+        });
+     </script>
+  </body>
+</html>

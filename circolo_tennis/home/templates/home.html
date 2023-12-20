@@ -1,36 +1,127 @@
-{% load static %}
+{% extends "navbar.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title>Circolo Tennis Tricase</title>
-   <!-- Link a Bootstrap CSS -->
-   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-   <!-- Aggiungi eventuali fogli di stile personalizzati qui -->
-   <link href="{% static 'css/home.css' %}" rel="stylesheet">
- 
-</head>
-<body>
-    <nav>
-    <header>
-      <a href="#" class="logo">Circolo Tennis Tricase</a>
-      <ul class="navigation">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Prenotazioni</a></li>
-        <li><a href="#">Merch</a></li>
-        <li><a href="#">Contacci</a></li>
-      </ul>
-    </header>
-    </nav>
+{% block content %}
+<div id="content-wrapper" style="width: 100%; height: 100%;">
+
+    <!-- Section 1: Campo da Tennis -->
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+        <div class="col-md-6 p-lg-5 mx-auto my-5">
+            <h1 class="display-3 fw-bold">Benvenuti al Circolo Tennis Tricase</h1>
+            <p class="lead">Il tuo rifugio per il tennis e il divertimento all'aperto. Siamo lieti di darti il benvenuto nel nostro circolo tennis, dove puoi migliorare le tue abilità, fare nuove amicizie e goderti il tennis in mezzo alla natura.</p>
+            <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                <a class="icon-link" href="#">
+                    Scopri di più
+                    <svg class="bi"><use xlink:href="#chevron-right"/></svg>
+                </a>
+                <a class="icon-link" href="#">
+                    Prenota un campo
+                    <svg class="bi"><use xlink:href="#chevron-right"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="product-device shadow-sm d-none d-md-block"></div>
+        <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+    </div>
+
+    
+    <!-- Section 2: Lezioni e Allenamenti -->
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+      <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden box">
+          <div id="lezioni-carousel-1" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                  <div class="carousel-item active">
+                      <img src="" alt="i nosti foto campo1"class="gallery-image">
+                  </div>
+                  <div class="carousel-item">
+                      <img src="" alt="Lezioni e Allenamenti 2"class="gallery-image">
+                  </div>
+                  <div class="carousel-item">
+                      <img src="" alt="Lezioni e Allenamenti 3"class="gallery-image">
+                  </div>
+              </div>
+              <a class="carousel-control-prev" href="#lezioni-carousel-1" role="button" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#lezioni-carousel-1" role="button" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+              </a>
+          </div>
+      </div>
+      <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden box">
+          <div class="my-3 p-3">
+              <h2 class="display-5">I nostri campi</h2>
+          </div>
+          <p>Offriamo lezioni e allenamenti per giocatori di tutti i livelli, dai principianti agli esperti. I nostri istruttori professionisti ti aiuteranno a migliorare il tuo gioco.</p>
+      </div>
+  </div>
   
-    <section class="parallax">
-      <h1 id="title">Circolo Tennis Tricase</h1>
-    </section>
+    <!-- Section 2: Lezioni e Allenamenti -->
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+      <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden box">
+        <div class="my-3 p-3">
+            <h2 class="display-5">Lezioni e Allenamenti</h2>
+        </div>
+        <p>Offriamo lezioni e allenamenti per giocatori di tutti i livelli, dai principianti agli esperti. I nostri istruttori professionisti ti aiuteranno a migliorare il tuo gioco.</p>
+    </div>
+    <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden box">
+      <div id="lezioni-carousel-1" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+              <div class="carousel-item active">
+                  <img src="" alt="foto allenamenti">
+              </div>
+              <div class="carousel-item">
+                  <img src="" alt="Lezioni e Allenamenti 2">
+              </div>
+              <div class="carousel-item">
+                  <img src="" alt="Lezioni e Allenamenti 3">
+              </div>
+          </div>
+          <a class="carousel-control-prev" href="#lezioni-carousel-1" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#lezioni-carousel-1" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+          </a>
+      </div>
+  </div>
+  </div>
   
 
-    <script src="{% static 'js/home.js' %}"></script>
-  </body>
-</html>
+    <!-- Section 3: Clubhouse e Servizi -->
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden box">
+            <div id="clubhouse-carousel-1" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="" alt="Clubhouse e Servizi 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="" alt="Clubhouse e Servizi 2">
+                    </div>
+                    <div class "carousel-item">
+                        <img src="" alt="Clubhouse e Servizi 3">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#clubhouse-carousel-1" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#clubhouse-carousel-1" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </div>
+        </div>
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden box">
+            <div class="my-3 p-3">
+                <h2 class="display-5">Clubhouse e Servizi</h2>
+            </div>
+            <p>Il nostro clubhouse offre servizi come spogliatoi, bar e ristorante. Dopo una partita, rilassati e socializza con gli altri membri del circolo.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
