@@ -1,0 +1,92 @@
+{% extends "navbar.html" %}
+
+{% load static %}
+
+{% block content %}
+<h1>Crea Prenotazioni Settimanali</h1>
+
+<a href="{% url 'crea_prenotazioni_settimanali' %}" class="btn btn-outline-secondary">Crea prenotazioni</a>
+<a href="{% url 'cancella_tutte_prenotazioni' %}" class="btn btn-outline-secondary">Cancella prenotazioni</a>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Prenotazioni di oggi - {{ data_selezionata|date:'l, d F Y' }}</h2>
+        
+        {% if data_selezionata != today %}
+            <!-- Aggiungi il pulsante per il giorno precedente solo se la data selezionata è diversa da oggi -->
+            <a href="{% url 'prenotazioni_data' data_selezionata=data_precedente|date:'Y-m-d' %}" class="btn btn-outline-primary">Giorno Precedente</a>
+        {% endif %}
+        
+        <!-- Aggiungi il pulsante per il giorno successivo -->
+        <a href="{% url 'prenotazioni_data' data_selezionata=data_successiva|date:'Y-m-d' %}" class="btn btn-outline-primary">Giorno Successivo</a>
+    </div>
+
+  <!-- Visualizzazione delle prenotazioni come card con una card per riga e un gap tra le card -->
+<div class="row mt-4">
+    {% for prenotazione in prenotazioni %}
+        {% if not prenotazione.prenotato %}
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ prenotazione.campo }} - {{ prenotazione.orario }}</h5>
+                        <div style="text-align: left;">
+                            <!-- Aggiungi il pulsante per aprire la modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confermaModal"
+                                data-data="{{ prenotazione.data|date:'Y-m-d' }}"
+                                data-ora="{{ prenotazione.orario }}"
+                                data-campo="{{ prenotazione.campo }}"
+                                data-id="{{ prenotazione.id }}"
+                                onclick="confermaPrenotazione(this)">Prenota</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+<!-- Modal per la conferma della prenotazione -->
+<div class="modal fade" id="confermaModal" tabindex="-1" role="dialog" aria-labelledby="confermaModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confermaModalLabel">Riepilogo Prenotazione</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Data: <span id="modal-data"></span></p>
+        <p>Ora: <span id="modal-ora"></span></p>
+        <p>Campo: <span id="modal-campo"></span></p>
+        <p>Nome e Cognome: {{ request.user.first_name }} {{ request.user.last_name }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+        <a href="#" class="btn btn-primary" id="confermaPrenotazioneBtn">Conferma Prenotazione</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // Funzione per popolare i dati nella modal
+    function confermaPrenotazione(button) {
+        var modalData = $(button).data();
+        $('#modal-data').text(modalData.data);
+        $('#modal-ora').text(modalData.ora);
+        $('#modal-campo').text(modalData.campo);
+        
+        // Imposta l'URL dinamicamente con l'ID della prenotazione
+        var confermaPrenotazioneUrl = "{% url 'conferma_prenotazione' 0 %}".replace('0', modalData.id);
+        $('#confermaPrenotazioneBtn').attr('href', confermaPrenotazioneUrl);
+
+        // Apri la modal
+        $('#confermaModal').modal('show');
+    }
+</script>
+
+{% endblock %}

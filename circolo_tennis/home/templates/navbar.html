@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url "home" %}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <!-- Aggiunta della classe "nav-item" e "dropdown" -->
@@ -32,9 +32,9 @@
                 <!-- Aggiunta del div con la classe "dropdown-menu" per il sotto-menu -->
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <!-- Aggiunta degli elementi del sotto-menu -->
-                    <a class="dropdown-item" href="#">Le tue prenotazioni</a>
+                    <a class="dropdown-item" href="{% url "mie_prenotazioni" %}">Le tue prenotazioni</a>
                     <a class="dropdown-item" href="#">Le tue lobby</a>
-                    <a class="dropdown-item" href="#">Effettua prenotazione</a>
+                    <a class="dropdown-item" href="{% url "prenotazioni" %}">Effettua prenotazione</a>
                 </div>
             </li>
             <li class="nav-item">
