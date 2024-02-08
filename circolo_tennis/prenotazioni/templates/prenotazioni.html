@@ -29,8 +29,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ prenotazione.campo }} - {{ prenotazione.orario }}</h5>
+                        {% if user.is_authenticated %}
                         <div style="text-align: left;">
                             <!-- Aggiungi il pulsante per aprire la modal -->
+                            
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confermaModal"
                                 data-data="{{ prenotazione.data|date:'Y-m-d' }}"
                                 data-ora="{{ prenotazione.orario }}"
@@ -38,6 +40,9 @@
                                 data-id="{{ prenotazione.id }}"
                                 onclick="confermaPrenotazione(this)">Prenota</button>
                         </div>
+                        {% else %}
+                            <p>Per prenotare devi essere loggato</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
