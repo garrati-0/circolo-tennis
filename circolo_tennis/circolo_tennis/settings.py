@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'carrelo',
     'prenotazioni',
     'impostazioni',
+    'contattacci',
 ]
 
 MIDDLEWARE = [
