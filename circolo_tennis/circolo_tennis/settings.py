@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'home',
     'prodotti',
     'carrelo',
-    'prenotazioni'
+    'prenotazioni',
+    'impostazioni',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Impostazioni SMTP per l'invio di email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Sostituisci con il tuo server SMTP
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'proovvvvvvvvvv@gmail.com'  # Sostituisci con il tuo indirizzo email
+EMAIL_HOST_PASSWORD = 'ubab oijj xndm dcbu'  # Sostituisci con la tua password

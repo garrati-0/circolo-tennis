@@ -8,6 +8,7 @@
    <title>Circolo Tennis Tricase</title>
    <!-- Link a Bootstrap CSS -->
    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
    <!-- Aggiungi eventuali fogli di stile personalizzati qui -->
    <link href="{% static 'css/home.css' %}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
@@ -86,7 +87,7 @@
                     {{ user.first_name }} {{ user.last_name }}
                 </a>
                 <ul class="dropdown-menu text-small">
-                    <li><a class="dropdown-item" href="">Impostazioni</a></li>
+                    <li><a class="dropdown-item" href="{% url 'impostazioni' %}">Impostazioni</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Esci</a></li>
                 </ul>
@@ -139,12 +140,11 @@
                 </form>
                 <hr>
                 <!-- Link per passare alla registrazione -->
-                <p>Se non sei registrato, <a href="#" id="showRegister">clicca qui</a> per registrarti.</p>
+                <p>Se non sei registrato, <a href="#" id="showRegister"data-toggle="modal" data-target="#registerModal">clicca qui</a> per registrarti.</p>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Modal di registrazione -->
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
@@ -157,7 +157,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Esempio form di registrazione -->
                 <form method="post" action="{% url 'register' %}">
                     {% csrf_token %}
                     <div class="form-group">
@@ -189,17 +188,13 @@
 </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="{% static 'js/home.js' %}"></script>
-    <script>
-        // Mostra il modal di registrazione quando si clicca sul link
-        $(document).ready(function(){
-           $("#showRegister").click(function(){
-              $('#loginModal').modal('hide');
-              $('#registerModal').modal('show');
-           });
-        });
+>
+    
+
      </script>
   </body>
 </html>

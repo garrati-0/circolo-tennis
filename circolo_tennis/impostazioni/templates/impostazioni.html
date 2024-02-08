@@ -1,0 +1,131 @@
+{% extends "navbar.html" %}
+
+{% load static %}
+
+{% block content %}
+<div id="content-wrapper" style="width: 100%; height: 100%;">
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+        <div class="container">
+            <h1>Modifica Profilo</h1>
+
+            <form method="post" action="{% url 'modifica_profilo' %}" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="profileimage" class="form-label">Immagine:</label>
+                    <input type="file" class="form-control" id="profileimage" name="profileimage" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="changepassword">Nuova Password</label>
+                    <input type="password" class="form-control" id="changepassword" name="changepassword" placeholder="Nuova Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+            </form>
+        </div>
+    
+
+    <div class="container mt-5">
+        <!-- Move the button to the top right -->
+    
+        <h2>Indirizzi Salvati</h2>
+
+        </div>
+        <div class="row">
+            
+            {% for indirizzo in indirizzi %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Indirizzo</h5>
+                            <p class="card-text">Via: {{ indirizzo.via }}</p>
+                            <p class="card-text">Città: {{ indirizzo.citta }}</p>
+                            <p class="card-text">CAP: {{ indirizzo.cap }}</p>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rimuoviIndirizzoModal_{{ indirizzo.id }}">
+                                Rimuovi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col-md text-end">
+                <!-- Move the button to the top right using text-end class -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aggiungiIndirizzoModal">
+                    Aggiungi Indirizzo
+                </button>
+            </div>
+        </div>
+        
+    </div>
+
+
+</div>
+
+<div class="modal fade" id="aggiungiIndirizzoModal" tabindex="-1" aria-labelledby="aggiungiIndirizzoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="aggiungiIndirizzoModalLabel">Aggiungi Indirizzo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'aggiungi_indirizzo' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="via" class="form-label">Via</label>
+                        <input type="text" class="form-control" id="via" name="via" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="civico" class="form-label">Civico</label>
+                        <input type="text" class="form-control" id="civico" name="civico" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cap" class="form-label">CAP</label>
+                        <input type="text" class="form-control" id="cap" name="cap" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="citta" class="form-label">Città</label>
+                        <input type="text" class="form-control" id="citta" name="citta" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="provincia" class="form-label">Provincia</label>
+                        <input type="text" class="form-control" id="provincia" name="provincia" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stato" class="form-label">Stato</label>
+                        <input type="text" class="form-control" id="stato" name="stato" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salva Indirizzo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for indirizzo in indirizzi %}
+    <div class="modal fade" id="rimuoviIndirizzoModal_{{ indirizzo.id }}" tabindex="-1" aria-labelledby="rimuoviIndirizzoModalLabel_{{ indirizzo.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rimuoviIndirizzoModalLabel_{{ indirizzo.id }}">Rimuovi Indirizzo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Confermi la rimozione dell'indirizzo?</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="{% url 'rimuovi_indirizzo' indirizzo.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Conferma Rimozione</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<script>
+    $(document).ready(function() {
+        $('#aggiungiIndirizzoModal').on('shown.bs.modal', function () {
+            // Codice JavaScript per l'apertura del modale
+        });
+    });
+</script>
+{% endblock %}
