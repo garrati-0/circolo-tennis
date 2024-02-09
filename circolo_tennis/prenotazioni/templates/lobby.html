@@ -5,18 +5,27 @@
 <h1>Lobby</h1>
 
 <div class="container mt-4">
-    <!-- Loop attraverso tutte le lobby e visualizzale come card -->
+    <!-- Loop attraverso tutte le lobby pubbliche e visualizzale come card -->
     {% for lobby in tutte_le_lobbies %}
-    <div class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title">Lobby {{ lobby.id }}</h5>
-            <p class="card-text">Creatore: {{ lobby.creator.username }}</p>
-            <p class="card-text">Tipo partita: {{ lobby.tipo_partita }}</p>
-            <p class="card-text">Livello: {{ lobby.livello }}</p>
-            <p class="card-text">Numero di giocatori: {{ lobby.numero_giocatori }}/{{ lobby.max_giocatori }}</p>
-           
-        </div>
-    </div>
+        {% if lobby.pubblicata %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Lobby {{ lobby.id }}</h5>
+                    <p class="card-text">Creatore: {{ lobby.creator.username }}</p>
+                    <p class="card-text">Campo: {{ lobby.prenotazione_campo.campo }}</p>
+                    <p class="card-text">Data: {{ lobby.prenotazione_campo.data }}</p>
+                    <p class="card-text">Ora: {{ lobby.prenotazione_campo.orario }}</p>
+                    <p class="card-text">Tipo partita: {{ lobby.tipo_partita }}</p>
+                    <p class="card-text">Livello: {{ lobby.livello }}</p>
+                    <p class="card-text">Numero di giocatori: {{ lobby.numero_giocatori }}/{{ lobby.max_giocatori }}</p>
+                    {% if user.is_authenticated %}
+                        {% if lobby.numero_giocatori < lobby.max_giocatori %}
+                            <a href="{% url 'aggiungi_giocatore' lobby.id %}" class="btn btn-primary">Aggiungiti alla lobby</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
 

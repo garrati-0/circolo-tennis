@@ -153,7 +153,8 @@ def mie_prenotazioni(request):
 def visualizza_lobbies(request):
     # Recupera tutte le lobby dal database
     tutte_le_lobbies = Lobby.objects.all()
-    
+    for x in tutte_le_lobbies:
+        print(x.partecipanti.all())
     # Passa le lobby al template per la visualizzazione
     return render(request, 'lobby.html', {'tutte_le_lobbies': tutte_le_lobbies})
 
@@ -196,10 +197,38 @@ def crea_lobby(request, prenotazione_id):
             tipo_partita=tipo_partita,
             livello=livello,
             creator=creator,
-            prenotazione_campo=prenotazione_campo  # Assegna la prenotazione del campo alla lobby
+            prenotazione_campo=prenotazione_campo,  # Assegna la prenotazione del campo alla lobby
+            pubblicata=True
         )
         
         # Reindirizza l'utente alla pagina delle prenotazioni o ad una pagina di conferma
         return redirect('prenotazioni')  # Cambia 'pagina_conferma' con l'URL della pagina desiderata
         
     return redirect('prenotazioni')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML
+
+
+
+def aggiungi_giocatore(request, lobby_id):
+    # Ottieni la lobby dalla richiesta
+    lobby = get_object_or_404(Lobby, id=lobby_id)
+    print(lobby)
+    # Verifica se l'utente è autenticato
+    if request.user.is_authenticated:
+        # Controlla se la lobby ha ancora posti disponibili
+        print(lobby.numero_giocatori)
+        print(lobby.max_giocatori)
+        if lobby.numero_giocatori < lobby.max_giocatori:
+            lobby.numero_giocatori= lobby.numero_giocatori + 1
+            lobby.partecipanti.add(request.user)
+            lobby.save()
+            print(lobby.numero_giocatori)
+            print(lobby.partecipanti.all())
+
+            # Verifica se il numero di giocatori è uguale al massimo consentito
+            if lobby.numero_giocatori == lobby.max_giocatori:
+                # Imposta la lobby come non pubblicata
+                lobby.pubblicata = False
+                lobby.save()
+
+    # Ritorna alla pagina della lobby dopo l'aggiunta del giocatore
+    return redirect('visualizza_lobbies')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML

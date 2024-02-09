@@ -16,8 +16,7 @@ class PrenotazioneCampo(models.Model):
     durata = models.IntegerField(default=1)  # Durata in ore
     prenotato = models.BooleanField(default=False)
 
-    def __str__(self):
-        return f"{self.campo} - {self.data} - {self.orario} - {self.cliente.username}"
+
     
 
 class Lobby(models.Model):
@@ -38,7 +37,7 @@ class Lobby(models.Model):
     numero_giocatori = models.IntegerField(default=1)  # Numero di giocatori attualmente nella lobby
     prenotazione_campo = models.ForeignKey(PrenotazioneCampo, related_name='related_lobby', on_delete=models.CASCADE, null=True, blank=True)
     pubblicata = models.BooleanField(default=False)  # Flag per indicare se la lobby è pubblicata o meno
-
+    partecipanti = models.ManyToManyField(User, related_name='partecipated_lobbies', blank=True)
     def __str__(self):
         return f"Lobby {self.id} - Creatore: {self.creator.username} - Tipo partita: {self.tipo_partita} - Livello: {self.livello}"
 
