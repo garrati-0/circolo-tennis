@@ -1,20 +1,27 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Indirizzo
+from .models import Indirizzo, UserProfile
 import os
 import requests
 from django.contrib import messages
+from os.path import basename
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 from django import forms
 
 
+@login_required
 def impostazioni(request):
-    # Recupera gli indirizzi dell'utente loggato
-    indirizzi = Indirizzo.objects.filter(user=request.user)
-
-    return render(request, 'impostazioni.html', {'indirizzi': indirizzi})
+    # Assicura che l'utente sia autenticato prima di procedere
+    if request.user.is_authenticated:
+        # Recupera gli indirizzi dell'utente loggato
+        indirizzi = Indirizzo.objects.filter(user=request.user)
+        return render(request, 'impostazioni.html', {'indirizzi': indirizzi})
+    else:
+        # In caso di utente non autenticato, reindirizza alla pagina di accesso
+        return redirect('home.html')  # Assicurati di sostituire 'pagina_login' con il nome reale della tua pagina di accesso
 
 
 def validate_address(via, civico, cap, citta, provincia, stato):
@@ -78,22 +85,37 @@ def rimuovi_indirizzo(request, indirizzo_id):
     
 
 
+from os.path import basename
+from django.contrib import messages
+from django.shortcuts import redirect
+from .models import UserProfile
+
 def modifica_profilo(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        user_profile = UserProfile(user=request.user)
+
     if request.method == 'POST':
-        # Estrai i dati dallla richiesta POST
-        new_profile_image = request.FILES.get('profileimage')
+        # Estrai i dati dalla richiesta POST
+        foto_profilo = request.FILES.get('profileimage')
         new_password = request.POST.get('changepassword')
 
         # Aggiorna l'immagine del profilo se presente
-        if new_profile_image:
-            request.user.profile.profile_image = new_profile_image
-            request.user.profile.save()
+        if foto_profilo:
+            # Estrai solo il nome del file dall'URL
+            nome_file = basename(foto_profilo.name)
+
+            # Salva solo il nome del file senza il percorso completo
+            user_profile.foto_profilo.save(nome_file, foto_profilo)
+            user_profile.nomefoto = nome_file
 
         # Cambia la password solo se è stata fornita
         if new_password:
             request.user.set_password(new_password)
             request.user.save()
 
+        user_profile.save()
         messages.success(request, 'Le modifiche sono state salvate con successo.')
         return redirect('impostazioni')
 

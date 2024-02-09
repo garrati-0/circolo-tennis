@@ -35,8 +35,8 @@
                                 <img src="" class="card-img-top" alt="Prodotto 1">
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{x.prodotto}}</h5>
-                                <p class="card-text">{{x.prezzo}}€</p>
+                                <h5 class="card-title">{{x.prodotto.prodotto}}</h5>
+                                <p class="card-text">{{x.prodotto.prezzo}}€</p>
                                 
                                 <form method="post" action="{% url 'rimuovi' x.id %}">
                                     {% csrf_token %}
@@ -75,7 +75,7 @@
                                                 <img src="" alt="{{ x.prodotto }}" class="img-thumbnail">
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>{{ x.prodotto }}</strong></p>
+                                                <p><strong>{{ x.prodotto.prodotto }}</strong></p>
                                                 <p>Prezzo: {{ x.prezzo }}$</p>
                                             </div>
                                         </div>
