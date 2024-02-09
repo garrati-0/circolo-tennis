@@ -142,3 +142,15 @@ def mie_prenotazioni(request):
     prenotazioni_utente = PrenotazioneCampo.objects.filter(cliente=user).order_by('data', 'orario')
 
     return render(request, 'mie_prenotazioni.html', {'prenotazioni_utente': prenotazioni_utente})
+
+
+
+
+from .models import Lobby
+
+def visualizza_lobbies(request):
+    # Recupera tutte le lobby dal database
+    tutte_le_lobbies = Lobby.objects.all()
+    
+    # Passa le lobby al template per la visualizzazione
+    return render(request, 'lobby.html', {'tutte_le_lobbies': tutte_le_lobbies})

@@ -9,4 +9,5 @@ urlpatterns = [
     path('prenotazioni/<str:data_selezionata>/', views.prenotazioni_data, name='prenotazioni_data'),
     path('conferma_prenotazione/<int:prenotazione_id>/', views.conferma_prenotazione, name='conferma_prenotazione'),
     path('mie_prenotazioni/', views.mie_prenotazioni, name='mie_prenotazioni'),
+    path('visualizza_lobbies/', views.visualizza_lobbies, name='visualizza_lobbies'),   
 ]

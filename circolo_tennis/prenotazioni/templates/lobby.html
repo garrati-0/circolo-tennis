@@ -1,0 +1,23 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Lobby</h1>
+
+<div class="container mt-4">
+    <!-- Loop attraverso tutte le lobby e visualizzale come card -->
+    {% for lobby in tutte_le_lobbies %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Lobby {{ lobby.id }}</h5>
+            <p class="card-text">Creatore: {{ lobby.creator.username }}</p>
+            <p class="card-text">Tipo partita: {{ lobby.tipo_partita }}</p>
+            <p class="card-text">Livello: {{ lobby.livello }}</p>
+            <p class="card-text">Numero di giocatori: {{ lobby.numero_giocatori }}/{{ lobby.max_giocatori }}</p>
+           
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
