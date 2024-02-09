@@ -25,4 +25,5 @@ urlpatterns = [
     path('prenotazioni/', include('prenotazioni.urls')),
     path('impostazioni/', include('impostazioni.urls')),
     path('contattacci/', include('contattacci.urls')),
+    path('administration/', include('administration.urls')),
 ]

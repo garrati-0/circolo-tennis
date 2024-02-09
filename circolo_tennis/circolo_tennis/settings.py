@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'prenotazioni',
     'impostazioni',
     'contattacci',
+    'administration',
 ]
 
 MIDDLEWARE = [
