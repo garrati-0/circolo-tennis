@@ -3,8 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from prodotti.models import Product
 import json
-
+from prenotazioni.models import PrenotazioneCampo 
 import os
+from datetime import date, datetime, timedelta
+
+
 def login_view(request):
     if request.user.is_authenticated:
         # Se l'utente è già autenticato, reindirizza alla pagina di amministrazione
@@ -58,10 +61,11 @@ def administration(request):
 @login_required
 def administration_dashboard(request):
     # Recupera tutti i prodotti
-    prodotti = Product.objects.all()
     
+    prodotti = Product.objects.all()
+    prenotazioni = PrenotazioneCampo.objects.all().order_by('data')
     # Passa i prodotti al template
-    return render(request, 'administration_dashboard.html', {'prodotti': prodotti})
+    return render(request, 'administration_dashboard.html', {'prodotti': prodotti,'prenotazioni': prenotazioni})
 
 
 
@@ -97,3 +101,47 @@ def update_quantita(request):
                 prodotto.save()
 
     return redirect('administration_dashboard')
+
+
+
+
+
+def crea_prenotazioni_settimanali(request):
+    
+    oggi = date.today()
+    settimana_corrente = oggi.isocalendar()[1]
+
+    campi = {
+        'Campo 1': {'orario_inizio': '06:00'},
+        'Campo 2': {'orario_inizio': '06:15'},
+        'Campo 3': {'orario_inizio': '06:30'},
+    }
+
+    durata_prenotazione = 1  # 1 ora di prenotazione
+
+    for campo, config in campi.items():
+        orario_inizio = datetime.strptime(config['orario_inizio'], '%H:%M').time()
+
+        for giorno in range(7):
+            data_prenotazione = oggi + timedelta(days=giorno)
+            orario_prenotazione = orario_inizio
+
+            while orario_prenotazione < datetime.strptime('23:00', '%H:%M').time():
+                PrenotazioneCampo.objects.create(
+                    campo=campo,
+                    orario=orario_prenotazione,
+                    data=data_prenotazione,
+                    cliente=None,
+                    settimana=settimana_corrente,
+                    durata=durata_prenotazione
+                )
+                # Incrementa l'orario di prenotazione di 1 ora
+                orario_prenotazione = (datetime.combine(date.min, orario_prenotazione) + timedelta(hours=1)).time()
+
+    return redirect('administration_dashboard')
+
+
+
+def cancella_tutte_prenotazioni(request):
+    PrenotazioneCampo.objects.all().delete()
+    return redirect('administration_dashboard')  # Sostituisci 'prenotazioni' con il nome corretto della tua vista

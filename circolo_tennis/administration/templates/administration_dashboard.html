@@ -56,6 +56,39 @@
                     </table>
                    
                 </form>
+
+
+                <a href="{% url 'crea_prenotazioni_settimanali' %}" class="btn btn-outline-secondary">Crea prenotazioni</a>
+                <a href="{% url 'cancella_tutte_prenotazioni' %}" class="btn btn-outline-secondary">Cancella prenotazioni</a>
+                <h2>Tabella Campi</h2>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Campo</th>
+                        <th>Orario</th>
+                        <th>Data</th>
+                        
+                        <th>Durata</th>
+                        <th>Prenotato</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for prenotazione in prenotazioni %}
+                      <tr>
+                        <td>{{ prenotazione.campo }}</td>
+                        <td>{{ prenotazione.orario }}</td>
+                        <td>{{ prenotazione.data }}</td>
+                       
+                        
+                        <td>{{ prenotazione.durata }}</td>
+                        <td>{{ prenotazione.prenotato }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
     <div class="modal fade" id="aggiungiProdottoModal" tabindex="-1" aria-labelledby="aggiungiProdottoModalLabel" aria-hidden="true">
@@ -80,6 +113,10 @@
                 </form>
             </div>
         </div>
+
+
+
+      
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

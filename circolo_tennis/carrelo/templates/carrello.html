@@ -40,8 +40,9 @@
                                 
                                 <form method="post" action="{% url 'rimuovi' x.id %}">
                                     {% csrf_token %}
-                                    <a href="{% url 'rimuovi' x.id %}" class="btn btn-danger">Rimuovi</a>
+                                    <button type="submit" class="btn btn-danger">Rimuovi</button>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>

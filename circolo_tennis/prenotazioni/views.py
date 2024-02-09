@@ -71,13 +71,13 @@ def crea_prenotazioni_settimanali(request):
                 # Incrementa l'orario di prenotazione di 1 ora
                 orario_prenotazione = (datetime.combine(date.min, orario_prenotazione) + timedelta(hours=1)).time()
 
-    return redirect('prenotazioni')
+    return redirect('administration_dashboard')
 
 
 
 def cancella_tutte_prenotazioni(request):
     PrenotazioneCampo.objects.all().delete()
-    return redirect('prenotazioni')  # Sostituisci 'prenotazioni' con il nome corretto della tua vista
+    return redirect('administration_dashboard')  # Sostituisci 'prenotazioni' con il nome corretto della tua vista
 
 
 

@@ -16,9 +16,7 @@
     <p><strong>Dettagli dell'ordine:</strong></p>
     <ul>
         {% for prodotto in prodotti_ordine %}
-        <div class="card-header py-3">
-            <img src="{% static 'img/'|add:prodotto.immagine %}" class="card-img-top" alt="{{ prodotto.prodotto }}">
-        </div>
+
         <p>{{ prodotto.prodotto }} - {{ prodotto.prezzo }}</p>
         {% endfor %}
     

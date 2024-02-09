@@ -11,7 +11,7 @@ class PrenotazioneCampo(models.Model):
     campo = models.CharField(max_length=10, choices=campo_choices)
     orario = models.TimeField()
     data = models.DateField()
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     settimana = models.IntegerField()
     durata = models.IntegerField(default=1)  # Durata in ore
     prenotato = models.BooleanField(default=False)

@@ -27,11 +27,15 @@ def carrello(request):
     }
     return HttpResponse(template.render(context, request))
 
+from django.shortcuts import get_object_or_404
+
 @login_required
 def rimuovi(request, prodotto_id):
     user = request.user
-    Preferiti.objects.filter(user=user, prodotto_id=prodotto_id).delete()
+    preferito = get_object_or_404(Preferiti, pk=prodotto_id, user=user)  # Ottieni l'istanza dei preferiti dell'utente
+    preferito.delete()  # Elimina l'istanza dei preferiti
     return redirect('carrello')
+
 
 @login_required
 def ordine_effetuato(request):
