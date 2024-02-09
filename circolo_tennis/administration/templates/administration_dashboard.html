@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Gestione Utenti</title>
+   <!-- Link a Bootstrap CSS -->
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+   <!-- Aggiungi eventuali fogli di stile personalizzati qui -->
+   <link href="{% static 'css/home.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+   rel="stylesheet"
+</head>
+<body>
+    <div class="container-fluid mt-5" style="height: 100%;">
+ 
+
+                <button id="openAggiungiProdotto" type="button" class="btn btn-primary" data-toggle="modal" data-target="#aggiungiProdottoModal">Aggiungi Prodotto</button>
+        
+            <!-- Colonna per la lista degli ordini -->
+            
+            <div class="col-md-7">
+                <h2>Elenco Prodotti</h2>
+                <form method="post" action="{% url "update_quantita" %}">
+                    {% csrf_token %}
+                    <table class="table table-bordered">
+                        <!-- Intestazione della tabella degli ordini -->
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>prodotto</th>
+                                <th>quantita</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ciclo attraverso gli ordini -->
+                            {% for prodotto in prodotti %}
+                                <tr>
+                                    <td>{{ prodotto.id}}</td>
+                                    <td>{{ prodotto.prodotto }}</td>
+                                    <td>
+                                        <input type="number" name="quantita_{{ prodotto.id }}" value="{{ prodotto.quantita }}">
+                                        <button type="submit" class="btn btn-primary">Aggiorna Quantità</button>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3">Nessun ordine disponibile</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                   
+                </form>
+            </div>
+
+    <div class="modal fade" id="aggiungiProdottoModal" tabindex="-1" aria-labelledby="aggiungiProdottoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Aggiungi Prodotto</h2>
+                </div>
+                <form method="post" action="{% url 'aggiungi_prodotto' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label for="new-product" class="form-label">Prodotto:</label>
+                        <input type="text" class="form-control" id="new-product" name="new_product" required>
+                        <label for="new-price" class="form-label">Prezzo:</label>
+                        <input type="text" class="form-control" id="new-price" name="new_price" required>
+                        <label for="new-image" class="form-label">Immagine:</label>
+                        <input type="file" class="form-control" id="new-image" name="new_image" accept="image/*" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Aggiungi Prodotto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+
+            $('#openAggiungiProdotto').click(function() {
+                $('#aggiungiProdottoModal').modal('show');
+            });
+        });
+    </script>
+</body>
+</html>

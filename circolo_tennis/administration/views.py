@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from prodotti.models import Product
+import json
 
-
+import os
 def login_view(request):
     if request.user.is_authenticated:
         # Se l'utente è già autenticato, reindirizza alla pagina di amministrazione
@@ -55,5 +57,43 @@ def administration(request):
 
 @login_required
 def administration_dashboard(request):
-    # Vista della dashboard di amministrazione
-    return render(request, 'administration_dashboard.html')
+    # Recupera tutti i prodotti
+    prodotti = Product.objects.all()
+    
+    # Passa i prodotti al template
+    return render(request, 'administration_dashboard.html', {'prodotti': prodotti})
+
+
+
+
+def aggiungi_prodotto(request):
+    if request.method == 'POST':
+        new_product = request.POST.get('new_product')
+        new_price = request.POST.get('new_price')
+        new_image = request.FILES.get('new_image')
+        new_image_name = new_image.name if new_image else None  # Ottieni il nome dell'immagine
+        
+        if new_product and new_price and new_image:
+            prodotto = Product.objects.create(
+                prodotto=new_product,
+                prezzo=new_price,
+                imagine=new_image,
+                nomeimg=new_image_name  # Salva il nome dell'immagine
+            )
+            
+            return redirect('administration_dashboard')  # Redirect alla pagina di successo dopo l'aggiunta del prodotto
+            
+    return redirect('administration_dashboard')  # Redirect alla pagina di successo dopo l'aggiunta del prodotto
+
+
+
+def update_quantita(request):
+    if request.method == 'POST':
+        for prodotto in Product.objects.all():
+            quantita_key = f'quantita_{prodotto.id}'
+            if quantita_key in request.POST:
+                new_quantita = request.POST[quantita_key]
+                prodotto.quantita = new_quantita
+                prodotto.save()
+
+    return redirect('administration_dashboard')
