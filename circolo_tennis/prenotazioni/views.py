@@ -8,6 +8,8 @@ from datetime import date, datetime, timedelta
 from django.shortcuts import render, redirect
 from django.utils.translation import activate
 from .models import PrenotazioneCampo
+from .models import Lobby
+
 
 def prenotazioni(request, data_selezionata=None):
     if data_selezionata is None:
@@ -146,7 +148,7 @@ def mie_prenotazioni(request):
 
 
 
-from .models import Lobby
+
 
 def visualizza_lobbies(request):
     # Recupera tutte le lobby dal database
@@ -154,3 +156,50 @@ def visualizza_lobbies(request):
     
     # Passa le lobby al template per la visualizzazione
     return render(request, 'lobby.html', {'tutte_le_lobbies': tutte_le_lobbies})
+
+
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Lobby, PrenotazioneCampo
+
+@login_required
+def crea_lobby(request, prenotazione_id):
+    print("Crea lobby")
+    if request.method == 'POST':
+        print("Post")
+        tipo_partita = request.POST.get('tipo_partita')
+        livello = request.POST.get('livello')
+        creator = request.user
+        
+        
+        prenotazione = get_object_or_404(PrenotazioneCampo, id=prenotazione_id)
+        print("Post")
+
+        
+   
+    
+    # Verifica che la prenotazione non sia già stata confermata
+        if not prenotazione.prenotato:
+        # Aggiorna il campo 'prenotato'
+            prenotazione.cliente = request.user
+            prenotazione.prenotato = True
+            prenotazione.save()  # ID della prenotazione del campo
+
+        # Ottieni l'istanza della prenotazione del campo
+        prenotazione_campo = PrenotazioneCampo.objects.get(id=prenotazione_id)
+        
+        # Crea una nuova istanza di Lobby nel database
+        lobby = Lobby.objects.create(
+            tipo_partita=tipo_partita,
+            livello=livello,
+            creator=creator,
+            prenotazione_campo=prenotazione_campo  # Assegna la prenotazione del campo alla lobby
+        )
+        
+        # Reindirizza l'utente alla pagina delle prenotazioni o ad una pagina di conferma
+        return redirect('prenotazioni')  # Cambia 'pagina_conferma' con l'URL della pagina desiderata
+        
+    return redirect('prenotazioni')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML

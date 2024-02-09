@@ -38,6 +38,13 @@
                                 data-campo="{{ prenotazione.campo }}"
                                 data-id="{{ prenotazione.id }}"
                                 onclick="confermaPrenotazione(this)">Prenota</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creaLobbyModal" data-data="{{ prenotazione.data|date:'Y-m-d' }}"
+                                data-ora="{{ prenotazione.orario }}"
+                                data-campo="{{ prenotazione.campo }}"
+                                data-id="{{ prenotazione.id }}"
+                                onclick="confermaLobby(this)">
+                                  Crea Lobby
+                              </button>
                         </div>
                         {% else %}
                             <p>Per prenotare devi essere loggato</p>
@@ -48,6 +55,48 @@
         {% endif %}
     {% endfor %}
 </div>
+
+<!-- Modal per inserire i dati della lobby -->
+<div class="modal fade" id="creaLobbyModal" tabindex="-1" role="dialog" aria-labelledby="creaLobbyModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="creaLobbyModalLabel">Crea Lobby</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form id="creaLobbyForm" method="post" action="">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label for="tipo_partita">Tipo Partita:</label>
+                      <select class="form-control" id="tipo_partita" name="tipo_partita">
+                          <option value="Singolo">Singolo</option>
+                          <option value="Doppio">Doppio</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="livello">Livello:</label>
+                      <select class="form-control" id="livello" name="livello">
+                          <option value="Principiante">Principiante</option>
+                          <option value="Intermedio">Intermedio</option>
+                          <option value="Esperto">Esperto</option>
+                      </select>
+                  </div>
+                  <div class="modal-body">
+                    <p>Data: <span id="modal-data"></span></p>
+                    <p>Ora: <span id="modal-ora"></span></p>
+                    <p>Campo: <span id="modal-campo"></span></p>
+                    <p>Nome e Cognome: {{ request.user.first_name }} {{ request.user.last_name }}</p>
+                  </div>
+                  <button type="submit" class="btn btn-primary">crea lobby</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
 
 
 <!-- Modal per la conferma della prenotazione -->
@@ -83,7 +132,7 @@
         $('#modal-data').text(modalData.data);
         $('#modal-ora').text(modalData.ora);
         $('#modal-campo').text(modalData.campo);
-        
+
         // Imposta l'URL dinamicamente con l'ID della prenotazione
         var confermaPrenotazioneUrl = "{% url 'conferma_prenotazione' 0 %}".replace('0', modalData.id);
         $('#confermaPrenotazioneBtn').attr('href', confermaPrenotazioneUrl);
@@ -91,6 +140,22 @@
         // Apri la modal
         $('#confermaModal').modal('show');
     }
+   
+      function confermaLobby(button) {
+          var modalData = $(button).data();
+          $('#modal-data').text(modalData.data);
+          $('#modal-ora').text(modalData.ora);
+          $('#modal-campo').text(modalData.campo);
+  
+          // Imposta l'href del pulsante "crea lobby" con il prenotazione_id
+          var prenotazioneId = modalData.id;
+          var url = "{% url 'crea_lobby' 0 %}".replace('0', prenotazioneId);
+          $('#creaLobbyForm').attr('action', url);  // Aggiorna l'azione del form con l'URL corretto
+  
+          // Apri il modal
+          $('#creaLobbyModal').modal('show');
+      }
+  
 </script>
 
 {% endblock %}
