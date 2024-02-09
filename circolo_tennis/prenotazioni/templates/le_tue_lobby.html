@@ -19,6 +19,9 @@
                                 <li>{{ partecipante.username }}</li>
                             {% endfor %}
                         </ul>
+                        {% if not lobby.is_public %}
+                            <span class="text-danger">Lobby piena e non più pubblica</span>
+                        {% endif %}
                     </li>
                 {% empty %}
                     <li class="list-group-item">Non hai creato ancora nessuna lobby.</li>
@@ -41,6 +44,9 @@
                                 <li>{{ partecipante.username }}</li>
                             {% endfor %}
                         </ul>
+                        {% if not lobby.is_public %}
+                            <span class="text-danger">Lobby piena e non più pubblica</span>
+                        {% endif %}
                     </li>
                 {% empty %}
                     <li class="list-group-item">Non partecipi ancora a nessuna lobby.</li>
