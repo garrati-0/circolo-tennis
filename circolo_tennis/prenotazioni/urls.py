@@ -12,4 +12,5 @@ urlpatterns = [
     path('visualizza_lobbies/', views.visualizza_lobbies, name='visualizza_lobbies'),   
     path('prenotazioni/crea_lobby/<int:prenotazione_id>/', views.crea_lobby, name='crea_lobby'),
     path('aggiungi_giocatore/<int:lobby_id>/', views.aggiungi_giocatore, name='aggiungi_giocatore'),
+    path('mie-lobbies/', views.le_mie_lobbies, name='mie_lobbies'),
 ]

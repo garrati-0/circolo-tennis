@@ -1,0 +1,52 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Lobby create da te:</h2>
+            <ul class="list-group">
+                {% for lobby in lobbies_create %}
+                    <li class="list-group-item">
+                        <strong>Lobby:</strong> {{ lobby.tipo_partita }} - {{ lobby.livello }}<br>
+                        <strong>Data:</strong> {{ lobby.prenotazione_campo.data }}<br>
+                        <strong>Ora:</strong> {{ lobby.prenotazione_campo.orario }}<br>
+                        <strong>Campo:</strong> {{ lobby.prenotazione_campo.campo }}<br>
+                        <strong>Partecipanti:</strong>
+                        <ul>
+                            {% for partecipante in lobby.partecipanti.all %}
+                                <li>{{ partecipante.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Non hai creato ancora nessuna lobby.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <!-- Codice per le lobby a cui partecipi -->
+            <h2>Lobby a cui partecipi:</h2>
+            <ul class="list-group">
+                {% for lobby in lobbies_partecipate %}
+                    <li class="list-group-item">
+                        <strong>Lobby:</strong> {{ lobby.tipo_partita }} - {{ lobby.livello }}<br>
+                        <strong>Data:</strong> {{ lobby.prenotazione_campo.data }}<br>
+                        <strong>Ora:</strong> {{ lobby.prenotazione_campo.orario }}<br>
+                        <strong>Campo:</strong> {{ lobby.prenotazione_campo.campo }}<br>
+                        <strong>Partecipanti:</strong>
+                        <ul>
+                            {% for partecipante in lobby.partecipanti.all %}
+                                <li>{{ partecipante.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Non partecipi ancora a nessuna lobby.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

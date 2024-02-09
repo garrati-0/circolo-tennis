@@ -232,3 +232,20 @@ def aggiungi_giocatore(request, lobby_id):
 
     # Ritorna alla pagina della lobby dopo l'aggiunta del giocatore
     return redirect('visualizza_lobbies')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML
+
+
+
+
+def le_mie_lobbies(request):
+    # Ottieni le lobby create dall'utente corrente
+    lobbies_create = Lobby.objects.filter(creator=request.user)
+
+    # Ottieni le lobby alle quali partecipa l'utente corrente
+    lobbies_partecipate = request.user.partecipated_lobbies.all()
+
+    context = {
+        'lobbies_create': lobbies_create,
+        'lobbies_partecipate': lobbies_partecipate,
+    }
+
+    return render(request, 'le_tue_lobby.html', context)
