@@ -55,14 +55,15 @@ def ordine_effetuato(request):
             prodotto_selezionato.quantita -= 1
             prodotto_selezionato.save()
 
-            ordine = OrdineEffettuato.objects.create(
-            id_utente=user,
-            id_indirizzo=indirizzo_selezionato,
-            id_prodotto=prodotto_selezionato
-        )
+            
 
         prodotti_ordine.append(prodotto_selezionato)
+    ordine = OrdineEffettuato.objects.create(
+        id_utente=user,
+        id_indirizzo=indirizzo_selezionato
+    )
 
+    ordine.id_prodotto.set(prodotti_ordine)
     subject = 'Conferma Ordine'
     message = render_to_string('email.html', {'user': user, 'ordine': ordine, 'prodotti_ordine': prodotti_ordine})
     plain_message = strip_tags(message)

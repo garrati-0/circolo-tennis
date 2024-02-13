@@ -37,7 +37,10 @@
                                 data-ora="{{ prenotazione.orario }}"
                                 data-campo="{{ prenotazione.campo }}"
                                 data-id="{{ prenotazione.id }}"
-                                onclick="confermaPrenotazione(this)">Prenota</button>
+                                onclick="confermaPrenotazione(this)">
+                                Prenota
+                            </button>
+
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creaLobbyModal" data-data="{{ prenotazione.data|date:'Y-m-d' }}"
                                 data-ora="{{ prenotazione.orario }}"
                                 data-campo="{{ prenotazione.campo }}"
@@ -85,9 +88,9 @@
                       </select>
                   </div>
                   <div class="modal-body">
-                    <p>Data: <span id="modal-data"></span></p>
-                    <p>Ora: <span id="modal-ora"></span></p>
-                    <p>Campo: <span id="modal-campo"></span></p>
+                    <p>Data: <span id="modal-datal"></span></p>
+                    <p>Ora: <span id="modal-oral"></span></p>
+                    <p>Campo: <span id="modal-campol"></span></p>
                     <p>Nome e Cognome: {{ request.user.first_name }} {{ request.user.last_name }}</p>
                   </div>
                   <button type="submit" class="btn btn-primary">crea lobby</button>
@@ -123,7 +126,8 @@
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
 
 <script>
     // Funzione per popolare i dati nella modal
@@ -143,9 +147,9 @@
    
       function confermaLobby(button) {
           var modalData = $(button).data();
-          $('#modal-data').text(modalData.data);
-          $('#modal-ora').text(modalData.ora);
-          $('#modal-campo').text(modalData.campo);
+          $('#modal-datal').text(modalData.data);
+          $('#modal-oral').text(modalData.ora);
+          $('#modal-campol').text(modalData.campo);
   
           // Imposta l'href del pulsante "crea lobby" con il prenotazione_id
           var prenotazioneId = modalData.id;

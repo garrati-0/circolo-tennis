@@ -19,9 +19,14 @@
                     <p class="card-text">Livello: {{ lobby.livello }}</p>
                     <p class="card-text">Numero di giocatori: {{ lobby.numero_giocatori }}/{{ lobby.max_giocatori }}</p>
                     {% if user.is_authenticated %}
+                    {% if user != lobby.creator %}
+                        
+                           
+                        
                         {% if lobby.numero_giocatori < lobby.max_giocatori %}
                             <a href="{% url 'aggiungi_giocatore' lobby.id %}" class="btn btn-primary">Aggiungiti alla lobby</a>
                         {% endif %}
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>

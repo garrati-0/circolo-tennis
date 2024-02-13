@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from carrelo.models import OrdineEffettuato
 from prodotti.models import Product
 import json
 from prenotazioni.models import PrenotazioneCampo 
@@ -64,8 +65,9 @@ def administration_dashboard(request):
     
     prodotti = Product.objects.all()
     prenotazioni = PrenotazioneCampo.objects.all().order_by('data')
-    # Passa i prodotti al template
-    return render(request, 'administration_dashboard.html', {'prodotti': prodotti,'prenotazioni': prenotazioni})
+    ordini = OrdineEffettuato.objects.all()
+    
+    return render(request, 'administration_dashboard.html', {'prodotti': prodotti,'prenotazioni': prenotazioni, 'ordini': ordini}) 
 
 
 

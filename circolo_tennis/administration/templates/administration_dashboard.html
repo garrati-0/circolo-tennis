@@ -57,6 +57,38 @@
                    
                 </form>
 
+                <div class="container-fluid mt-5" style="height: 100%;">
+                    <div class="col-md-7">
+                        <h2>Elenco Ordini</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    
+                                    <th>Nome Prodotto</th>
+                                    <th>Indirizzo</th>
+                                    <th>Utente</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ordine in ordini %}
+                                    <tr>
+                                        <td>
+                                        {% for prodotto in ordine.id_prodotto.all %}
+                                        {{ prodotto.id }} {{ prodotto.prodotto }}
+                                        {% endfor %}
+                                        </td>
+                                        <td>{{ ordine.id_indirizzo.via }} {{ ordine.id_indirizzo.civico }} {{ ordine.id_indirizzo.cap }}</td>
+                                        <td>{{ ordine.id_utente.username }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4">Nessun ordine disponibile</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <a href="{% url 'crea_prenotazioni_settimanali' %}" class="btn btn-outline-secondary">Crea prenotazioni</a>
                 <a href="{% url 'cancella_tutte_prenotazioni' %}" class="btn btn-outline-secondary">Cancella prenotazioni</a>

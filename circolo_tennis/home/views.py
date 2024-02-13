@@ -15,16 +15,12 @@ def home(request):
     return render(request, 'home.html')
 
 
-
-
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')  # Modifica da 'email' a 'username'
         password = request.POST.get('password')
         
-        # Usa il gestore personalizzato per l'autenticazione
+
         user = authenticate(request, username=username, password=password)
         print(user)
         if user is not None:
@@ -51,18 +47,17 @@ def register_view(request):
         # Verifica se l'email è unica
         if User.objects.filter(email=new_email).exists():
             messages.error(request, 'Questa email è già registrata. Scegli un\'altra email.')
-            return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
-
+            return redirect('home')  
         # Verifica se le password corrispondono
         if new_password != confirm_password:
             messages.error(request, 'Le password non corrispondono. Riprova.')
-            return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
+            return redirect('home') 
 
         # Verifica se l'username è unico
         new_username = f"{new_firstname.lower()}.{new_lastname.lower()}"
         if User.objects.filter(username=new_username).exists():
             messages.error(request, 'Questo username è già in uso. Scegline un altro.')
-            return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
+            return redirect('home') 
 
         # Crea un nuovo utente
         new_user = User.objects.create_user(
@@ -73,9 +68,10 @@ def register_view(request):
             password=new_password
         )
         login(request, new_user)
+        #manda mail con username
         messages.success(request, 'Registrazione effettuata con successo.')
         subject = 'Conferma Ordine'
-        message = render_to_string('email.html', {'user': new_user,})
+        message = render_to_string('emailhome.html', {'user': new_user,})
         plain_message = strip_tags(message)
 
         from_email = 'proovvvvvvvvvv@gmail.com'
@@ -83,12 +79,12 @@ def register_view(request):
         to_email = [new_user.email]
 
         send_mail(subject, plain_message, from_email, to_email, html_message=message)
-        return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
+        return redirect('home') 
 
-    return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
+    return redirect('home') 
 
 
 
 def logout_view(request):
     logout(request)
-    return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento dopo il logout
+    return redirect('home')  
