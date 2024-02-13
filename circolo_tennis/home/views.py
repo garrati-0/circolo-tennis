@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
-
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 # Create your views here.
@@ -27,7 +29,7 @@ def login_view(request):
         print(user)
         if user is not None:
             login(request, user)
-            messages.success(request, 'Accesso effettuato con successo.')
+            #messages.success(request, 'Accesso effettuato con successo.')
             return redirect('home')
         else:
             messages.error(request, 'Credenziali non valide. Riprova.')
@@ -72,6 +74,15 @@ def register_view(request):
         )
         login(request, new_user)
         messages.success(request, 'Registrazione effettuata con successo.')
+        subject = 'Conferma Ordine'
+        message = render_to_string('email.html', {'user': new_user,})
+        plain_message = strip_tags(message)
+
+        from_email = 'proovvvvvvvvvv@gmail.com'
+        
+        to_email = [new_user.email]
+
+        send_mail(subject, plain_message, from_email, to_email, html_message=message)
         return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
 
     return redirect('home')  # Puoi modificare questa riga in base alla tua logica di reindirizzamento
