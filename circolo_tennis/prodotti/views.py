@@ -7,9 +7,16 @@ from .models import Product, Preferiti
 from .forms import RecensioneForm
 
 
-def prodotti(request):
+def prodotti(request,categoria):
     user = request.user
-    myproduct = Product.objects.all().prefetch_related('recensioni')
+    myproduct = Product.objects.filter(categoria=categoria).prefetch_related('recensioni')
+    num = Preferiti.objects.filter(user=request.user).count()
+
+    
+    context = {
+        'categoria': categoria,
+        'prodotti': prodotti
+    }
     order = request.GET.get('order', 'price_asc')
 
     # Define the sorting order based on the 'order' parameter
@@ -22,6 +29,7 @@ def prodotti(request):
        
         'user': user,
         'myproduct': myproduct,
+        'num': num,
     }
     return render(request, 'prodotti.html', context)
 
@@ -31,11 +39,12 @@ def aggiungi_ai_preferiti(request, prodotto_id):
 
     #if not Preferiti.objects.filter(user=request.user, prodotto=prodotto).exists():
     preferiti = Preferiti.objects.create(user=request.user, prodotto=prodotto)
+    counter = preferiti.increment_counter()
     messages.success(request, "Prodotto aggiunto ai preferiti.")
     #else:
        # messages.error(request, "Prodotto già presente nei preferiti.")
 
-    return redirect('home')  
+    return redirect('prodotti', categoria=prodotto.categoria)    
 @login_required
 def inserisci_recensione(request, prodotto_id):
     prodotto = get_object_or_404(Product, id=prodotto_id)
@@ -51,4 +60,4 @@ def inserisci_recensione(request, prodotto_id):
         else:
             messages.error(request, "Errore nella validazione del form.")
 
-    return redirect('prodotti')  
+    return redirect('prodotti', categoria=prodotto.categoria)    

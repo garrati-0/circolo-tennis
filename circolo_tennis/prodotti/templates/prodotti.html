@@ -84,7 +84,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                        
+                            {% if user.is_authenticated %}
                             <!-- Modulo per inserire nuove recensioni -->
                             <form method="post" action="{% url 'inserisci_recensione' x.id %}">
                                 {% csrf_token %}
@@ -103,15 +103,18 @@
                                 
                                 <button type="submit" class="btn btn-success mt-3">Inserisci recensione</button>
                             </form>
+                            {% endif %}
                         </div>
                         <div class="col-md-6">
                             <h4>Prezzo: {{ x.prezzo }}$</h4>
                             <p>{{x.informazioni}}</p>
-                        
+                            {% if user.is_authenticated %}
                             <form method="post" action="{% url 'aggiungi_ai_preferiti' x.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-primary mb-3">Aggiungi al carrello</button>
                             </form>
+                        {% endif %}
+                        
                         
                             <!-- Visualizza le recensioni esistenti -->
                            

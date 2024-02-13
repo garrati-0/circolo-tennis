@@ -19,7 +19,7 @@
                                 <li>{{ partecipante.username }}</li>
                             {% endfor %}
                         </ul>
-                        {% if not lobby.is_public %}
+                        {% if not lobby.pubblicata %}
                             <span class="text-danger">Lobby piena e non più pubblica</span>
                         {% endif %}
                     </li>
@@ -44,7 +44,7 @@
                                 <li>{{ partecipante.username }}</li>
                             {% endfor %}
                         </ul>
-                        {% if not lobby.is_public %}
+                        {% if lobby.pubblicata %}
                             <span class="text-danger">Lobby piena e non più pubblica</span>
                         {% endif %}
                     </li>

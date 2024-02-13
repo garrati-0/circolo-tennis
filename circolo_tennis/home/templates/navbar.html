@@ -21,7 +21,26 @@
         position: absolute; /* Imposta il menu a comparsa come assoluto */
         top: 100%; /* Posiziona il menu sotto il link del profilo */
         left: 0; /* Allinea il menu con il bordo sinistro del contenitore */
+
     }
+
+    .cart-icon {
+        position: relative;
+      }
+      
+      .cart-counter {
+        position: absolute;
+        top: -4px;
+        right: -10px;
+        background-color: red;
+        font-size: 12px;
+        color: white;
+        border-radius: 50%;
+        width: 15px;
+        height: 15px;
+        text-align: center;
+        line-height: 15px; /* Imposta line-height uguale all'altezza del contenitore */
+      }
 </style>
 </head>
 <body>
@@ -54,8 +73,14 @@
                 <a class="nav-link" href="{% url "prenotazioni" %}">Prenotazioni</a>
             </li>
             {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "prodotti" %}">Prodotti</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Prodotti
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'prodotti' categoria='racchette' %}">Racchette</a>
+                    <a class="dropdown-item" href="{% url 'prodotti' categoria='abbigliamento' %}">Abbigliamento</a>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url "contattacci"%}">Contattaci</a>
@@ -73,7 +98,7 @@
                   </svg>
               </a>
               <div class="cart-counter">
-               
+               {{num}}
             </div>
           </div>
 

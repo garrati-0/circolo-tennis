@@ -123,32 +123,40 @@
               </div>
             </div>
 
-    <div class="modal fade" id="aggiungiProdottoModal" tabindex="-1" aria-labelledby="aggiungiProdottoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Aggiungi Prodotto</h2>
+            <div class="modal fade" id="aggiungiProdottoModal" tabindex="-1" aria-labelledby="aggiungiProdottoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Aggiungi Prodotto</h2>
+                        </div>
+                        <form method="post" action="{% url 'aggiungi_prodotto' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <label for="new-product" class="form-label">Prodotto:</label>
+                                <input type="text" class="form-control" id="new-product" name="new_product" required>
+                                <label for="new-price" class="form-label">Prezzo:</label>
+                                <input type="text" class="form-control" id="new-price" name="new_price" required>
+                                <label for="new-image" class="form-label">Immagine:</label>
+                                <input type="file" class="form-control" id="new-image" name="new_image" accept="image/*" required>
+                                <label for="new-info" class="form-label">Informazioni:</label>
+                                <textarea class="form-control" id="new-info" name="new_info" required></textarea>
+                                <label for="new-description" class="form-label">Descrizione:</label>
+                                <textarea class="form-control" id="new-description" name="new_description" required></textarea>
+                                <label for="new-category" class="form-label">Categoria:</label>
+                                <select class="form-control" id="new-category" name="new_category" required>
+                                    <option value="racchette">Racchette</option>
+                                    <option value="abbigliamento">Abbigliamento</option>
+                                    <!-- Aggiungi altre opzioni di categoria se necessario -->
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Aggiungi Prodotto</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form method="post" action="{% url 'aggiungi_prodotto' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <label for="new-product" class="form-label">Prodotto:</label>
-                        <input type="text" class="form-control" id="new-product" name="new_product" required>
-                        <label for="new-price" class="form-label">Prezzo:</label>
-                        <input type="text" class="form-control" id="new-price" name="new_price" required>
-                        <label for="new-image" class="form-label">Immagine:</label>
-                        <input type="file" class="form-control" id="new-image" name="new_image" accept="image/*" required>
-                        <label for="new-info" class="form-label">Informazioni:</label>
-                        <textarea class="form-control" id="new-info" name="new_info" required></textarea>
-                        <label for="new-description" class="form-label">Descrizione:</label>
-                        <textarea class="form-control" id="new-description" name="new_description" required></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Aggiungi Prodotto</button>
-                    </div>
-                </form>
             </div>
-        </div>
+            
 
 
 

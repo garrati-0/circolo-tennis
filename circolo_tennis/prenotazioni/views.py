@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, date
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, HttpResponse
+
+from prodotti.models import Preferiti
 from .models import PrenotazioneCampo
 from django.utils.translation import activate
 from django.utils.dateparse import parse_date
@@ -13,6 +15,7 @@ from django.contrib import messages
 
 
 def prenotazioni(request, data_selezionata=None):
+    num = Preferiti.objects.filter(user=request.user).count()
     if data_selezionata is None:
         data_selezionata = date.today()
     else:
@@ -38,6 +41,7 @@ def prenotazioni(request, data_selezionata=None):
         'data_selezionata': data_selezionata,
         'data_successiva': data_successiva,
         'data_precedente': data_precedente,
+        'num': num,
     })
 
 
@@ -139,10 +143,11 @@ def conferma_prenotazione(request, prenotazione_id):
 
 @login_required
 def mie_prenotazioni(request):
+    num = Preferiti.objects.filter(user=request.user).count()
     user = request.user
     prenotazioni_utente = PrenotazioneCampo.objects.filter(cliente=user).order_by('data', 'orario')
 
-    return render(request, 'mie_prenotazioni.html', {'prenotazioni_utente': prenotazioni_utente})
+    return render(request, 'mie_prenotazioni.html', {'prenotazioni_utente': prenotazioni_utente, 'num': num})
 
 
 
@@ -151,11 +156,12 @@ def mie_prenotazioni(request):
 
 def visualizza_lobbies(request):
     # Recupera tutte le lobby dal database
+    num = Preferiti.objects.filter(user=request.user).count()
     tutte_le_lobbies = Lobby.objects.all()
     for x in tutte_le_lobbies:
         print(x.partecipanti.all())
     # Passa le lobby al template per la visualizzazione
-    return render(request, 'lobby.html', {'tutte_le_lobbies': tutte_le_lobbies})
+    return render(request, 'lobby.html', {'tutte_le_lobbies': tutte_le_lobbies, 'num': num})
 
 
 
@@ -237,6 +243,7 @@ def aggiungi_giocatore(request, lobby_id):
 
 
 def le_mie_lobbies(request):
+    num = Preferiti.objects.filter(user=request.user).count()
     # Ottieni le lobby create dall'utente corrente
     lobbies_create = Lobby.objects.filter(creator=request.user)
 
@@ -246,6 +253,7 @@ def le_mie_lobbies(request):
     context = {
         'lobbies_create': lobbies_create,
         'lobbies_partecipate': lobbies_partecipate,
+        'num': num,
     }
 
     return render(request, 'le_tue_lobby.html', context)

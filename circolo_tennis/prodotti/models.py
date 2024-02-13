@@ -21,3 +21,13 @@ class Product(models.Model):
 class Preferiti(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     prodotto = models.ForeignKey(Product, on_delete=models.CASCADE)
+    counter = models.PositiveIntegerField(default=0)
+
+    def increment_counter(self):
+        self.counter += 1
+        self.save()
+
+    def decrement_counter(self):
+        if self.counter > 0:
+            self.counter -= 1
+            self.save()

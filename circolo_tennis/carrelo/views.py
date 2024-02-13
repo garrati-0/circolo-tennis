@@ -14,6 +14,7 @@ from django.contrib import messages
 
 @login_required
 def carrello(request):
+    num = Preferiti.objects.filter(user=request.user).count()
     user = request.user
     myproducts = Preferiti.objects.filter(user=user).select_related('prodotto')
     costo_totale = myproducts.aggregate(Sum('prodotto__prezzo'))['prodotto__prezzo__sum'] or 0
@@ -24,7 +25,9 @@ def carrello(request):
         'myproducts': myproducts,
         'user': user,
         'costo_totale': costo_totale,
-        'indirizzi': indirizzi
+        'indirizzi': indirizzi,
+        'num': num,
+        
     }
     return HttpResponse(template.render(context, request))
 
@@ -34,6 +37,7 @@ from django.shortcuts import get_object_or_404
 def rimuovi(request, prodotto_id):
     user = request.user
     preferito = get_object_or_404(Preferiti, pk=prodotto_id, user=user)  # Ottieni l'istanza dei preferiti dell'utente
+    preferito.decrement_counter()
     preferito.delete()  # Elimina l'istanza dei preferiti
     return redirect('carrello')
 
