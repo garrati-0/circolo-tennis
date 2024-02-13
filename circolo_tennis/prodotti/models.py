@@ -14,6 +14,8 @@ class Product(models.Model):
     imagine = models.ImageField(upload_to='prodotti\static\img', blank=True, null=True)
     nomeimg = models.CharField(max_length=255)
     quantita = models.PositiveIntegerField(default=0)
+    informazioni = models.TextField()
+    descrizione = models.TextField()
     recensioni = models.ManyToManyField(Recensione, related_name='recensioni_prodotto', blank=True)
 
 class Preferiti(models.Model):

@@ -77,6 +77,9 @@ def aggiungi_prodotto(request):
         new_product = request.POST.get('new_product')
         new_price = request.POST.get('new_price')
         new_image = request.FILES.get('new_image')
+        new_info = request.POST.get('new_info')  # Aggiunto per ottenere le informazioni
+        new_description = request.POST.get('new_description')  # Aggiunto per ottenere la descrizione
+        
         new_image_name = new_image.name if new_image else None  # Ottieni il nome dell'immagine
         
         if new_product and new_price and new_image:
@@ -84,7 +87,9 @@ def aggiungi_prodotto(request):
                 prodotto=new_product,
                 prezzo=new_price,
                 imagine=new_image,
-                nomeimg=new_image_name  # Salva il nome dell'immagine
+                nomeimg=new_image_name,  # Salva il nome dell'immagine
+                informazioni=new_info,
+                descrizione=new_description
             )
             
             return redirect('administration_dashboard')  # Redirect alla pagina di successo dopo l'aggiunta del prodotto
