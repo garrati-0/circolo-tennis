@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.utils.translation import activate
 from .models import PrenotazioneCampo
 from .models import Lobby
+from django.contrib import messages
 
 
 def prenotazioni(request, data_selezionata=None):
@@ -42,7 +43,7 @@ def prenotazioni(request, data_selezionata=None):
 
 
 def crea_prenotazioni_settimanali(request):
-    
+    PrenotazioneCampo.objects.all().delete()
     oggi = date.today()
     settimana_corrente = oggi.isocalendar()[1]
 
@@ -114,10 +115,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import PrenotazioneCampo
 
 def conferma_prenotazione(request, prenotazione_id):
-    # Assicurati che l'utente sia autenticato
-    if not request.user.is_authenticated:
-        # Gestisci il caso in cui l'utente non è autenticato (reindirizzamento, visualizzazione di un messaggio, ecc.)
-        return redirect('pagina_di_login')
+   
+    
 
     # Recupera la prenotazione dal database
     prenotazione = get_object_or_404(PrenotazioneCampo, id=prenotazione_id)
@@ -130,10 +129,10 @@ def conferma_prenotazione(request, prenotazione_id):
         prenotazione.cliente = request.user
         prenotazione.prenotato = True
         prenotazione.save()
-
+        messages.success(request, 'Prenotazione confermata con successo.')
         # Altre azioni o reindirizzamenti, se necessario
         return redirect('prenotazioni')
-
+    messages.error(request, 'Errore nella conferma della prenotazione.')
     # Gestisci il caso in cui la prenotazione è già stata confermata (reindirizzamento, visualizzazione di un messaggio, ecc.)
     return redirect('prenotazioni')
 
@@ -200,10 +199,10 @@ def crea_lobby(request, prenotazione_id):
             prenotazione_campo=prenotazione_campo,  # Assegna la prenotazione del campo alla lobby
             pubblicata=True
         )
-        
+        messages.success(request, 'Lobby creata con successo.')
         # Reindirizza l'utente alla pagina delle prenotazioni o ad una pagina di conferma
         return redirect('prenotazioni')  # Cambia 'pagina_conferma' con l'URL della pagina desiderata
-        
+    messages.error(request, 'Errore nella creazione della lobby.') 
     return redirect('prenotazioni')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML
 
 
@@ -223,13 +222,14 @@ def aggiungi_giocatore(request, lobby_id):
             lobby.save()
             print(lobby.numero_giocatori)
             print(lobby.partecipanti.all())
-
+            messages.success(request, 'Sei stato aggiunto alla lobby con successo.')
             # Verifica se il numero di giocatori è uguale al massimo consentito
             if lobby.numero_giocatori == lobby.max_giocatori:
                 # Imposta la lobby come non pubblicata
                 lobby.pubblicata = False
                 lobby.save()
-
+            return redirect('visualizza_lobbies')
+    messages.error(request, 'La lobby è già al completo.')
     # Ritorna alla pagina della lobby dopo l'aggiunta del giocatore
     return redirect('visualizza_lobbies')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML
 

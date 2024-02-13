@@ -10,6 +10,7 @@ from prodotti.models import Preferiti, Product
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib import messages
 
 @login_required
 def carrello(request):
@@ -54,11 +55,16 @@ def ordine_effetuato(request):
             prodotto_selezionato.quantita -= 1
             prodotto_selezionato.save()
 
+            ordine = OrdineEffettuato.objects.create(
+            id_utente=user,
+            id_indirizzo=indirizzo_selezionato,
+            id_prodotto=prodotto_selezionato
+        )
 
         prodotti_ordine.append(prodotto_selezionato)
 
     subject = 'Conferma Ordine'
-    message = render_to_string('email.html', {'user': user, 'prodotti_ordine': prodotti_ordine})
+    message = render_to_string('email.html', {'user': user, 'ordine': ordine, 'prodotti_ordine': prodotti_ordine})
     plain_message = strip_tags(message)
 
     from_email = 'proovvvvvvvvvv@gmail.com'
@@ -68,4 +74,5 @@ def ordine_effetuato(request):
     send_mail(subject, plain_message, from_email, to_email, html_message=message)
 
     prodotti_preferiti.delete()
+    messages.success(request, 'Ordine effettuato con successo.')
     return redirect('carrello')

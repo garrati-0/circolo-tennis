@@ -68,7 +68,7 @@ def aggiungi_indirizzo(request):
 
             # Puoi aggiungere ulteriori controlli o reindirizzamenti qui
             return redirect('impostazioni')  # Cambia 'pagina_di_destinazione' con l'URL desiderato
-
+    messages.error(request, 'Indirizzo non valido. Riprova.')
     return redirect('impostazioni')  # Assicurati di avere un template per il popup
 
 

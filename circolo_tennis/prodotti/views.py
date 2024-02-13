@@ -29,14 +29,13 @@ def prodotti(request):
 def aggiungi_ai_preferiti(request, prodotto_id):
     prodotto = get_object_or_404(Product, id=prodotto_id)
 
-    if not Preferiti.objects.filter(user=request.user, prodotto=prodotto).exists():
-        preferiti = Preferiti.objects.create(user=request.user, prodotto=prodotto)
-        messages.success(request, "Prodotto aggiunto ai preferiti.")
-    else:
-        messages.error(request, "Prodotto già presente nei preferiti.")
+    #if not Preferiti.objects.filter(user=request.user, prodotto=prodotto).exists():
+    preferiti = Preferiti.objects.create(user=request.user, prodotto=prodotto)
+    messages.success(request, "Prodotto aggiunto ai preferiti.")
+    #else:
+       # messages.error(request, "Prodotto già presente nei preferiti.")
 
-    return redirect('home')  # Modifica se necessario
-
+    return redirect('home')  
 @login_required
 def inserisci_recensione(request, prodotto_id):
     prodotto = get_object_or_404(Product, id=prodotto_id)
@@ -52,4 +51,4 @@ def inserisci_recensione(request, prodotto_id):
         else:
             messages.error(request, "Errore nella validazione del form.")
 
-    return redirect('prodotti')  # Modifica se necessario
+    return redirect('prodotti')  
