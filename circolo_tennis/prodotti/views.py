@@ -41,10 +41,12 @@ def aggiungi_ai_preferiti(request, prodotto_id):
     preferiti = Preferiti.objects.create(user=request.user, prodotto=prodotto)
     counter = preferiti.increment_counter()
     messages.success(request, "Prodotto aggiunto ai preferiti.")
-    #else:
-       # messages.error(request, "Prodotto già presente nei preferiti.")
 
     return redirect('prodotti', categoria=prodotto.categoria)    
+
+
+
+ 
 @login_required
 def inserisci_recensione(request, prodotto_id):
     prodotto = get_object_or_404(Product, id=prodotto_id)

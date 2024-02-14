@@ -31,3 +31,27 @@ class Preferiti(models.Model):
         if self.counter > 0:
             self.counter -= 1
             self.save()
+
+
+"""
+class Preferiti(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    prodotto = models.ManyToManyField(Product)
+    counter = models.PositiveIntegerField(default=0)
+
+    def increment_counter(self):
+        self.counter += 1
+        self.save()
+
+    def decrement_counter(self):
+        if self.counter > 0:
+            self.counter -= 1
+            self.save()
+    def aggiungi_prodotto(self, prodotto):
+
+        self.prodotto.add(prodotto)
+
+    def rimuovi_prodotto(self, prodotto):
+
+        self.prodotto.remove(prodotto)
+"""
