@@ -8,22 +8,20 @@ from django.contrib import messages
 from os.path import basename
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-
 from django import forms
 
 
-@login_required
+
 def impostazioni(request):
-    # Assicura che l'utente sia autenticato prima di procedere
     if request.user.is_authenticated:
         # Recupera gli indirizzi dell'utente loggato
         indirizzi = Indirizzo.objects.filter(user=request.user)
         return render(request, 'impostazioni.html', {'indirizzi': indirizzi})
+        
     else:
         # In caso di utente non autenticato, reindirizza alla pagina di accesso
-        return redirect('home.html')  # Assicurati di sostituire 'pagina_login' con il nome reale della tua pagina di accesso
-
-
+       return render(request, 'home.html')
+   
 def validate_address(via, civico, cap, citta, provincia, stato):
     # Costruisci l'indirizzo completo
     indirizzo_completo = f"{via}, {civico}, {cap} {citta}, {provincia}, {stato}"
@@ -41,7 +39,7 @@ def validate_address(via, civico, cap, citta, provincia, stato):
 
     # Verifica se l'indirizzo è valido
     if data['status'] == 'OK':
-        # Puoi aggiungere ulteriori controlli qui se necessario
+       
         return True
     else:
         return False
@@ -57,8 +55,6 @@ def aggiungi_indirizzo(request):
 
         # Valida l'indirizzo utilizzando le API di Google
         if validate_address(via, civico, cap, citta, provincia, stato):
-            # Recupera l'utente loggato o in base alle tue esigenze
-             # Recupera l'utente loggato o in base alle tue esigenze
             user = request.user
 
     # Crea una nuova istanza dell'oggetto Indirizzo e salvalo nel database
@@ -67,9 +63,9 @@ def aggiungi_indirizzo(request):
           
 
             # Puoi aggiungere ulteriori controlli o reindirizzamenti qui
-            return redirect('impostazioni')  # Cambia 'pagina_di_destinazione' con l'URL desiderato
+            return redirect('impostazioni')  
     messages.error(request, 'Indirizzo non valido. Riprova.')
-    return redirect('impostazioni')  # Assicurati di avere un template per il popup
+    return redirect('impostazioni')  #
 
 
 def rimuovi_indirizzo(request, indirizzo_id):
@@ -79,7 +75,7 @@ def rimuovi_indirizzo(request, indirizzo_id):
     if request.method == 'POST':
         # Se la richiesta è una POST, conferma la rimozione
         indirizzo.delete()
-          # Sostituisci 'settings' con il nome della tua vista di modifica profilo
+         
     return redirect('impostazioni')
     
     
@@ -119,4 +115,4 @@ def modifica_profilo(request):
         messages.success(request, 'Le modifiche sono state salvate con successo.')
         return redirect('impostazioni')
 
-    return redirect('impostazioni')
+    return redirect('home')

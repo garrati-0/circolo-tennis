@@ -109,10 +109,12 @@
                             <h4>Prezzo: {{ x.prezzo }}$</h4>
                             <p>{{x.informazioni}}</p>
                             {% if user.is_authenticated %}
+                            {% if x.quantita > 0 %}
                             <form method="post" action="{% url 'aggiungi_ai_preferiti' x.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-primary mb-3">Aggiungi al carrello</button>
                             </form>
+                        {% endif %}
                         {% endif %}
                         <p>{{x.descrizione}}</p>
                         

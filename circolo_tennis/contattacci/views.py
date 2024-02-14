@@ -14,12 +14,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 # Create your views here.
 def contattacci(request):
-    num = Preferiti.objects.filter(user=request.user).count()
-    context = {
-        'num': num,
-    }
+    if request.user.is_authenticated:
+        num = Preferiti.objects.filter(user=request.user).count()
+        context = {
+            'num': num,
+        }
+        return render(request, 'contattacci.html', context)
+    
 
-    return render(request, 'contattacci.html', context)
+    return render(request, 'contattacci.html')
 
   
 from django.shortcuts import render

@@ -10,7 +10,7 @@ from .forms import RecensioneForm
 def prodotti(request,categoria):
     user = request.user
     myproduct = Product.objects.filter(categoria=categoria).prefetch_related('recensioni')
-    num = Preferiti.objects.filter(user=request.user).count()
+   
 
     
     context = {
@@ -25,13 +25,23 @@ def prodotti(request,categoria):
             myproduct = myproduct.order_by('prezzo')
         elif order == 'price_desc':
             myproduct = myproduct.order_by('-prezzo')
-    context = {
+    if request.user.is_authenticated:
+        num = Preferiti.objects.filter(user=request.user).count()
+        context = {
        
         'user': user,
         'myproduct': myproduct,
         'num': num,
-    }
-    return render(request, 'prodotti.html', context)
+        }
+        return render(request, 'prodotti.html', context)
+    context = {
+       
+        'user': user,
+        'myproduct': myproduct,
+       
+        }
+    
+    return render(request, 'prodotti.html',context)
 
 @login_required
 def aggiungi_ai_preferiti(request, prodotto_id):

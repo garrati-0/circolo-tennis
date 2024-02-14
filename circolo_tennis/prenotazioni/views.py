@@ -15,7 +15,7 @@ from django.contrib import messages
 
 
 def prenotazioni(request, data_selezionata=None):
-    num = Preferiti.objects.filter(user=request.user).count()
+    
     if data_selezionata is None:
         data_selezionata = date.today()
     else:
@@ -23,10 +23,7 @@ def prenotazioni(request, data_selezionata=None):
 
     ora_attuale = datetime.now().time()
 
-    # Stampa informazioni di debug nel terminale
-
-
-    # Imposta la lingua su italiano
+   
     activate('it')
 
     prenotazioni_oggi = PrenotazioneCampo.objects.filter(data=data_selezionata, orario__gte=ora_attuale).order_by('campo', 'orario')
@@ -35,14 +32,21 @@ def prenotazioni(request, data_selezionata=None):
     # Calcola la data per il giorno successivo e precedente
     data_successiva = data_selezionata + timedelta(days=1)
     data_precedente = data_selezionata - timedelta(days=1)
-
-    return render(request, 'prenotazioni.html', {
+    if request.user.is_authenticated:
+        num = Preferiti.objects.filter(user=request.user).count()
+        return render(request, 'prenotazioni.html', {
         'prenotazioni': prenotazioni_oggi,
         'data_selezionata': data_selezionata,
         'data_successiva': data_successiva,
         'data_precedente': data_precedente,
         'num': num,
-    })
+        })
+    return render(request, 'prenotazioni.html', {
+        'prenotazioni': prenotazioni_oggi,
+        'data_selezionata': data_selezionata,
+        'data_successiva': data_successiva,
+        'data_precedente': data_precedente,
+        })
 
 
 
@@ -84,7 +88,7 @@ def crea_prenotazioni_settimanali(request):
 
 def cancella_tutte_prenotazioni(request):
     PrenotazioneCampo.objects.all().delete()
-    return redirect('administration_dashboard')  # Sostituisci 'prenotazioni' con il nome corretto della tua vista
+    return redirect('administration_dashboard') 
 
 
 
@@ -134,10 +138,10 @@ def conferma_prenotazione(request, prenotazione_id):
         prenotazione.prenotato = True
         prenotazione.save()
         messages.success(request, 'Prenotazione confermata con successo.')
-        # Altre azioni o reindirizzamenti, se necessario
+       
         return redirect('prenotazioni')
     messages.error(request, 'Errore nella conferma della prenotazione.')
-    # Gestisci il caso in cui la prenotazione è già stata confermata (reindirizzamento, visualizzazione di un messaggio, ecc.)
+ 
     return redirect('prenotazioni')
 
 
@@ -160,7 +164,7 @@ def visualizza_lobbies(request):
     tutte_le_lobbies = Lobby.objects.all()
     for x in tutte_le_lobbies:
         print(x.partecipanti.all())
-    # Passa le lobby al template per la visualizzazione
+   
     return render(request, 'lobby.html', {'tutte_le_lobbies': tutte_le_lobbies, 'num': num})
 
 
@@ -205,10 +209,10 @@ def crea_lobby(request, prenotazione_id):
             pubblicata=True
         )
         messages.success(request, 'Lobby creata con successo.')
-        # Reindirizza l'utente alla pagina delle prenotazioni o ad una pagina di conferma
-        return redirect('prenotazioni')  # Cambia 'pagina_conferma' con l'URL della pagina desiderata
+       
+        return redirect('prenotazioni')  #
     messages.error(request, 'Errore nella creazione della lobby.') 
-    return redirect('prenotazioni')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML
+    return redirect('prenotazioni') 
 
 
 
@@ -236,7 +240,7 @@ def aggiungi_giocatore(request, lobby_id):
             return redirect('visualizza_lobbies')
     messages.error(request, 'La lobby è già al completo.')
     # Ritorna alla pagina della lobby dopo l'aggiunta del giocatore
-    return redirect('visualizza_lobbies')  # Cambia 'nome_del_tuo_template.html' con il nome del tuo template HTML
+    return redirect('visualizza_lobbies')  
 
 
 

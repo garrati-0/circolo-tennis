@@ -13,11 +13,14 @@ from prodotti.models import Preferiti
 
 # Create your views here.
 def home(request):
-    num = Preferiti.objects.filter(user=request.user).count()
-    context = {
+    if request.user.is_authenticated:
+        num = Preferiti.objects.filter(user=request.user).count()
+        context = {
         'num': num,
-    }
-    return render(request, 'home.html', context)
+        }
+        return render(request, 'home.html', context)
+    return render(request, 'home.html')
+  
    
 
 

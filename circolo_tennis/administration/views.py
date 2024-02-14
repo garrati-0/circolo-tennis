@@ -27,8 +27,7 @@ def login_view(request):
         if user is not None and user.is_superuser:
             # Login dell'utente superuser
             login(request, user)
-            return redirect('administration_dashboard')  # Reindirizzamento alla pagina di amministrazione dopo il login
-        
+            return redirect('administration_dashboard')  
         elif user is not None:
             # Login dell'utente non superuser
             login(request, user)
@@ -49,7 +48,7 @@ def login_view(request):
 def administration(request):
     if request.user.is_superuser:
         # L'utente è autenticato ed è un superuser (root)
-        return redirect('administration_dashboard')  # Assumi che 'administration_dashboard' sia l'URL della pagina di amministrazione
+        return redirect('administration_dashboard')  
     else:
         # L'utente è autenticato ma non è un superuser
         error_message = "Non sei autorizzato ad accedere a questa pagina."
@@ -93,9 +92,9 @@ def aggiungi_prodotto(request):
                 categoria=new_category
             )
             
-            return redirect('administration_dashboard')  # Redirect alla pagina di successo dopo l'aggiunta del prodotto
+            return redirect('administration_dashboard')  
             
-    return redirect('administration_dashboard')  # Redirect alla pagina di successo dopo l'aggiunta del prodotto
+    return redirect('administration_dashboard')  
 
 
 
@@ -152,4 +151,4 @@ def crea_prenotazioni_settimanali(request):
 
 def cancella_tutte_prenotazioni(request):
     PrenotazioneCampo.objects.all().delete()
-    return redirect('administration_dashboard')  # Sostituisci 'prenotazioni' con il nome corretto della tua vista
+    return redirect('administration_dashboard') 
